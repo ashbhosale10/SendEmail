@@ -1,0 +1,91 @@
+Q4_2: Create application to send email.
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginHorizontal="20dp"
+    android:layout_marginVertical="20dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Q4_2: Create application to send email."
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/sendTo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="20dp"
+        android:hint="Send To"
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/sub"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="20dp"
+        android:hint="Subject"
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/body"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="20dp"
+        android:hint="Message"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/send"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginVertical="20dp"
+        android:text="Send" />
+
+</LinearLayout>
+
+
+
+package com.example.assi4_2sendemail;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+public class MainActivity extends AppCompatActivity {
+
+    EditText et1, et2, et3;
+    Button btn;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        et1 = findViewById(R.id.sendTo);
+        et2 = findViewById(R.id.sub);
+        et3 = findViewById(R.id.body);
+        btn = findViewById(R.id.send);
+
+        btn.setOnClickListener(view -> {
+            String sendTo = et1.getText().toString();
+            String sub = et2.getText().toString();
+            String body = et3.getText().toString();
+
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.putExtra(Intent.EXTRA_EMAIL, new String[]{sendTo});
+            intent.putExtra(Intent.EXTRA_SUBJECT, sub);
+            intent.putExtra(Intent.EXTRA_TEXT, body);
+            intent.setType("message/rfc822");
+            Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_LONG).show();
+            startActivity(Intent.createChooser(intent, "Open Email Application"));
+        });
+    }
+}
